@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+{% load staticfiles%}
+<head>
+<meta charset="utf-8">
+<title>我的博客文章：{{ article.title }}</title>
+<link href="{% static 'css/article-content.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery-1.9.1.js' %}"></script>
+</head>
+<body>
+	<div class="zong">
+		<div class="neirong">
+			<div class="touxiang" style="background-image: url({% static 'image/danhuang.jpg' %});">
+			</div>
+			<ul class="left">
+				<li class="lianjie"><a>友情链接</a>
+					<ul class="yincang">
+                        <li><a href="http://mp.weixin.qq.com/s/r0EXqF6DHBXUN7G_oe8s1w" target="_blank">IE进化论</a></li>
+                        <li><a href="http://glamor.site/" target="_blank">glamor</a></li>
+					</ul></li>
+				<li class="img"><a href="mailto:dmmjy9@gmail.com"><img src="{% static 'image/baiyouxiang.png' %}"><img src="{% static 'image/lanyouxiang.png' %}"></a></li>
+				<li class="img"><a href="https://www.github.com/dmmjy9" target="_blank"><img src="{% static 'image/baizhangyumao.png' %}"><img src="{% static 'image/lanzhangyumao.png' %}"></a></li>
+				<li class="img"><a href="https://www.twitter.com/dmmjy9" target="_blank"><img src="{% static 'image/baituite.png' %}"><img src="{% static 'image/lantuite.png' %}"></a></li>
+				<li class="img"><a href="https://www.facebook.com/plugins/error/confirm/follow?iframe_referer=http%3A%2F%2F127.0.0.1%3A8000%2F&kid_directed_site=false&secure=true&plugin=follow&return_params=%7B%22href%22%3A%22https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100006932743976%22%2C%22layout%22%3A%22standard%22%2C%22show_faces%22%3A%22true%22%2C%22colorscheme%22%3A%22light%22%2C%22width%22%3A%22450%22%2C%22height%22%3A%2280%22%2C%22ret%22%3A%22sentry%22%2C%22act%22%3A%22follow%22%7D" target="_blank"><img src="{% static 'image/baif.png' %}"><img src="{% static 'image/lanf.png' %}"></a></li>
+				<li class="img"><a href="https://plus.google.com" target="_blank"><img src="{% static 'image/baig+.png' %}"><img src="{% static 'image/lang+.png' %}"></a></li>
+		 </ul>
+		</div>
+		</div>
+        <script>
+            $(".left ul").hide()
+		    $(".left > li").mouseenter(function(){
+		        $(this).children().show()
+		    }).mouseleave(function(){
+		        $(".left ul").hide()
+		    })
+		</script>
+
+		<script>
+		$(".neirong img:even").hide()
+	    $(".neirong a").mouseenter(function(){
+		$(this).children().toggle()
+	    }).mouseleave(function(){
+		$(".neirong img").show()
+		$(".neirong img:even").hide()
+	})
+	</script>
+	<div class="jiben">
+		<ul class="dakuang">
+			<li style="margin-left: 10%;"><img src="{% static 'image/rili.png' %}"><p>{{ article.add_time|date:"Y.m.d" }}</p></li>
+			<li style="margin-left: 20%;"><img src="{% static 'image/lanyan.png' %}"><p>{{ article.read_nums }}</p></li>
+			<li style="margin-left: 20%;"><img src="{% static 'image/lanbi.png' %}"><p>{{ article.comment_set.count }}</p></li>
+			<li style="float: right"><a><img src="{% static 'image/lanxiala.png' %}"></a>
+				<ul class="buxianshi">
+					<!--<li><a>搜索</a></li>-->
+					<li><a href="{% url 'index' %}">首页</a></li>
+				</ul>
+			</li>
+			<div class="fixclear"></div>
+		</ul>
+	</div>
+	<script>
+		$(".dakuang ul").hide()
+		$(".dakuang > li").mouseenter(function(){
+		$(this).children().show()
+		}).mouseleave(function(){
+		$(".dakuang ul").hide()
+		}) 
+	</script>
+	<div class="wenzhang">
+	<h1>{{ article.title }}</h1>
+	<div class="biaoqian">
+		<a href="{% url 'index' %}"><img src="{% static 'image/shouye.png' %}"></a>
+		<!--<a><img src="{% static 'image/sousuo.png' %}"></a>-->
+		<a href="{% if article.category.id == 1 %}/article/category/1/{% elif article.category.id == 2 %}/article/category/2/
+        {% elif article.category.id == 3 %}/article/category/3/{% elif article.category.id == 4 %}/article/category/4/{% elif article.category.id == 5 %}/article/category/5/{% endif %}">
+        <img src="{% if article.category.id == 1 %}{% static 'image/Linux.png' %}{% elif article.category.id == 2 %}{% static 'image/Python.png' %}
+        {% elif article.category.id == 3 %}{% static 'image/Network.png' %}{% elif article.category.id == 4 %}{% static 'image/DataCenter.png' %}
+        {% elif article.category.id == 5 %}{% static 'image/Golang.png' %}{% endif %}"></a>
+	</div>
+	<p><div class="content_inner">{{ article.content|safe }}</div></p>
+	</div>
+		<div class="shangxiapian">
+		<a class="shangtu"><img src="{% static 'image/left.png' %}"></a><a class="shangzi" href="{% url 'article:content' last.id %}">{{ last.title }}</a>
+		<a class="xiatu"><img src="{% static 'image/right.png' %}"></a><a class="xiazi" href="{% url 'article:content' next.id %}">{{ next.title }}</a>
+	</div>
+
+<!--
+    <form class="pinglunfabiao" method="post" action="{% url 'operation:comment' article.id %}">
+		<input class="fabuyouxiang" name="email" type="email" placeholder="请输入你的邮箱" onFocus="this.placeholder=''" onBlur="this.placeholder='请输入你的邮箱'">
+		<label><textarea name="comment"></textarea></label>
+		<input type="submit" value="发射" class="tijiao">
+		<div class="fixclear"></div>
+{#        {% csrf_token %}#}
+	</form>
+
+
+{#    {% for comment in comments %}#}
+	    <div class="pinglun">
+{#		<a class="pinglunyouxiang">****{{ comment.email|slice:':11' }}</a>#}
+{#		<div class="wenzi"><p>{{ comment.comment }}</p>#}
+		</div>
+	</div>
+{#    {% endfor %}#}
+	<div class="yidong">
+{#		<div class="ding"><a href="javascript:scroll(0,0)"><img src="{% static 'image/up.png' %}"></a></div>#}
+{#		<div class="di"><a href="javascript:scroll(0,999999999)"><img src="{% static 'image/down.png' %}"></a></div>#}
+	</div><div class="fixclear"></div>
+	-->
+	</body>
+</html>

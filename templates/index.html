@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+{% load staticfiles %}
+<head>
+<meta charset="utf-8">
+<title>木木个人分享</title>
+<link href="{% static 'css/index.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery-1.9.1.js' %}"></script>
+</head>
+<body>
+		<div class="fenlei">
+		<ul>
+			<li><a {% if request.path == '/' %}class="active"{% endif %} href="{% url 'index' %}">Index</a></li>
+            <li><a {% if request.path == '/article/category/1/' %}class="active"{% endif %} href="{% url 'article:category' 1 %}">Linux</a></li>
+			<li><a {% if request.path == '/article/category/2/' %}class="active"{% endif %} href="{% url 'article:category' 2 %}">Python</a></li>
+			<li><a {% if request.path == '/article/category/3/' %}class="active"{% endif %} href="{% url 'article:category' 3 %}">Network</a></li>
+			<li><a {% if request.path == '/article/category/4/' %}class="active"{% endif %} href="{% url 'article:category' 4 %}">DataCenter</a></li>
+			<li><a {% if request.path == '/article/category/5/' %}class="active"{% endif %} href="{% url 'article:category' 5 %}">Golang</a></li>
+		</ul>
+		<div class="search">
+		<form method="get" action="{% url 'article:search' %}">
+			<input type="text" name="search_keywords" placeholder="请输入您要搜索的内容..." onFocus="this.placeholder=''" onBlur="this.placeholder='请输入您想要搜索的内容...'">
+			<button type="submit"> <img src="{% static 'image/search.png' %}"></button>
+			<div class="fixclear"></div>
+		</form>
+		</div>
+		<div class="fixclear"></div>	
+	</div>
+	<div class="head">
+		<div class="black"></div>
+		<img src="{% static 'image/yasuodiannao.jpg' %}">
+		<div class="biaoti"><p>钱不是花掉就没了,它只是换了种形式在你身边</p></div>
+	</div>
+	<div class="zong">
+		<div class="neirong">
+			<div class="touxiang" style="background-image: url({% static 'image/danhuang.jpg' %});">
+			</div>
+			<ul class="left">
+				<li class="lianjie">
+					<a>友情链接</a>
+						<ul class="yincang">
+							<li><a href="http://mp.weixin.qq.com/s/r0EXqF6DHBXUN7G_oe8s1w" target="_blank">IE进化论</a></li>
+                            <li><a href="http://glamor.site/" target="_blank">glamor</a></li>
+						</ul>
+				</li>
+				<li class="img"><a href="mailto:dmmjy9@gmail.com"><img src="{% static 'image/baiyouxiang.png' %}"><img src="{% static 'image/lanyouxiang.png' %}"></a></li>
+				<li class="img"><a href="https://www.github.com/dmmjy9" target="_blank"><img src="{% static 'image/baizhangyumao.png' %}"><img src="{% static 'image/lanzhangyumao.png' %}"></a></li>
+				<li class="img"><a href="https://www.twitter.com/dmmjy9" target="_blank"><img src="{% static 'image/baituite.png' %}"><img src="{% static 'image/lantuite.png' %}"></a></li>
+				<li class="img"><a href="https://www.facebook.com/plugins/error/confirm/follow?iframe_referer=http%3A%2F%2F127.0.0.1%3A8000%2F&kid_directed_site=false&secure=true&plugin=follow&return_params=%7B%22href%22%3A%22https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100006932743976%22%2C%22layout%22%3A%22standard%22%2C%22show_faces%22%3A%22true%22%2C%22colorscheme%22%3A%22light%22%2C%22width%22%3A%22450%22%2C%22height%22%3A%2280%22%2C%22ret%22%3A%22sentry%22%2C%22act%22%3A%22follow%22%7D" target="_blank"><img src="{% static 'image/baif.png' %}"><img src="{% static 'image/lanf.png' %}"></a></li>
+				<li class="img"><a href="https://plus.google.com" target="_blank"><img src="{% static 'image/baig+.png' %}"><img src="{% static 'image/lang+.png' %}"></a></li>
+		 </ul>
+		</div>
+		</div>
+		<script>
+				$(".left ul").hide()
+		$(".left > li").mouseenter(function(){
+		$(this).children().show()
+		}).mouseleave(function(){
+		$(".left ul").hide()
+		}) 
+		</script>
+	<script>
+		$(".neirong img:even").hide()
+	$(".neirong a").mouseenter(function(){
+		$(this).children().toggle()
+	}).mouseleave(function(){
+		$(".neirong img").show()
+		$(".neirong img:even").hide()
+	})
+	</script>
+	<script>
+window.onscroll=function(){
+if ($(document).scrollTop() >760)//这个是距离顶部高度
+{
+	$(".zong").addClass('gudingleft');//
+}else{
+	$(".zong").removeClass('gudingleft');
+}
+}
+	</script>
+<div class="right">
+    <p class="mianbaoxie"><a href="{% url 'index' %}">Index</a>
+        {% if request.path == '/article/category/1/' %} -> <a>Linux</a>
+        {% elif request.path == '/article/category/2/' %} -> <a>Python</a>
+        {% elif request.path == '/article/category/3/' %} -> <a>Network</a>
+        {% elif request.path == '/article/category/4/' %} -> <a>DataCenter</a>
+        {% elif request.path == '/article/category/5/' %} -> <a>Golang</a>
+        {% elif request.path == '/' %}
+        {% else %} -> <a>Search</a>{% endif %}
+    </p>
+	<div class="jianjie">
+        {% for article in articles.object_list %}
+		<div class="wai">
+			<p class="timu">
+				<a href="{% url 'article:content' article.id %}">{{ article.title }}</a>
+				<a class="fudong">{{ article.comment_set.count }}</a><img src="{% static 'image/lanbi.png' %}"><a class="fudong">{{ article.read_nums }}</a><img src="{% static 'image/lanyan.png' %}">
+				<div class="fixclear"></div>
+			</p>
+			<a class="jieshao" href="{% url 'article:content' article.id %}"><p>{{ article.abstract }}</p></a>
+			<p class="riqi">{{ article.add_time }}</p><div class="fixclear"></div>
+		</div>
+        {% endfor %}
+
+	</div>
+    <div class="pageturn">
+        <ul class="pagelist">
+            {% if articles.has_previous %}
+                <li class="long"><a href="?{{ articles.previous_page_number.querystring }}">上一页</a></li>
+            {% endif %}
+            {% for page in articles.pages %}
+                {% if page %}
+                    {% ifequal page articles.number %}
+                        <li class="active"><a href="?page=1">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="none"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if articles.has_next %}
+                <li class="long"><a href="?{{ articles.next_page_number.querystring }}">下一页</a></li>
+            {% endif %}
+        </ul>
+    <div class="fixclear"></div>
+    </div>
+	<div class="fixclear"></div>
+<!-- 右侧小火箭图标返回顶部 -->
+	<div id="shangxia2">
+		<span id="gotop1">
+			<a href="javascript:scroll(0,770)"><img src="{% static 'image/huojian.svg' %}" alt="返回顶部小火箭"></a>
+		</span>
+	</div>
+	<div class="footer">
+		<!--<a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备17000046号-2</a>-->
+	</div>
+</div>
+</body>
+<!--
+哪个傻逼前端写的代码，屎一样
+-->
+</html>
