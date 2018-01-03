@@ -13,7 +13,7 @@ from .models import Article, Category
 class IndexView(View):
     def get(self, request):
         categorys = Category.objects.all()
-        all_articles = Article.objects.all()
+        all_articles = Article.objects.all().order_by("-add_time")
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
