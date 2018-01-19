@@ -85,9 +85,9 @@
 		<a class="xiatu"><img src="{% static 'image/right.png' %}"></a><a class="xiazi" href="{% url 'article:content' next.id %}">{{ next.title }}</a>
 	</div>
 
-
+<!--
     <form class="pinglunfabiao" method="post" action="{% url 'operation:comment' article.id %}">
-		<!--<input class="fabuyouxiang" name="email" type="email" placeholder="请输入你的邮箱" onFocus="this.placeholder=''" onBlur="this.placeholder='请输入你的邮箱'">-->
+		<input class="fabuyouxiang" name="email" type="email" placeholder="请输入你的邮箱" onFocus="this.placeholder=''" onBlur="this.placeholder='请输入你的邮箱'">
 		<input class="fabuyouxiang" name="email" type="email" placeholder="请输入你的邮箱">
 		<label><textarea name="comment"></textarea></label>
 		<input type="submit" value="发射" class="tijiao">
@@ -95,7 +95,6 @@
 {#        {% csrf_token %}#}
 	</form>
 
-<!--
 {#    {% for comment in comments %}#}
 	    <div class="pinglun">
 {#		<a class="pinglunyouxiang">****{{ comment.email|slice:':11' }}</a>#}
